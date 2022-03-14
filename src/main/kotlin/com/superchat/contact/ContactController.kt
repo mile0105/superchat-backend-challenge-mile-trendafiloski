@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
 @RestController
 @RequestMapping(value = ["/api/v1/contacts"])
@@ -24,7 +25,7 @@ class ContactController(
     }
 
     @PostMapping
-    fun createContact(@RequestBody contactRequestBody: ContactRequestBody) : ResponseEntity<ContactResponseBody> {
+    fun createContact(@RequestBody @Valid contactRequestBody: ContactRequestBody) : ResponseEntity<ContactResponseBody> {
         return ResponseEntity.ok(contactService.createContact(contactRequestBody))
     }
 }
