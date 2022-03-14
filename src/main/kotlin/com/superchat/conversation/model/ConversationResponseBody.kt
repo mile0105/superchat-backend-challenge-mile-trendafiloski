@@ -5,5 +5,5 @@ import com.superchat.message.model.MessageResponseBody
 
 data class ConversationResponseBody(
     val contact: ContactResponseBody,
-    val messages: Set<MessageResponseBody>
+    val messages: List<MessageResponseBody>
 )
