@@ -6,7 +6,7 @@ import com.superchat.contact.model.ContactResponseBody
 import com.superchat.contact.repository.ContactRepository
 import com.superchat.contact.util.toDbEntityForInsertion
 import com.superchat.contact.util.toResponseBody
-import org.springframework.data.repository.findByIdOrNull
+import com.superchat.error.exceptions.NotFoundException
 import org.springframework.stereotype.Service
 
 @Service
@@ -27,7 +27,6 @@ class ContactService(
     }
 
     fun getContactById(id: Long): Contact {
-        //todo add exception
-        return contactRepository.findByIdOrNull(id)!!
+        return contactRepository.findById(id).orElseThrow { NotFoundException("Contact not found") }
     }
 }
