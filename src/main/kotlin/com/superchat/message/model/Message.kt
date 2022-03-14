@@ -1,22 +1,23 @@
 package com.superchat.message.model
 
 import com.superchat.contact.model.Contact
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.OneToOne
-import javax.persistence.Table
+import java.time.LocalDateTime
+import javax.persistence.*
 
 @Entity
 @Table(name = "message")
 data class Message(
     @Id
-    val id: Long,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long?,
     val content: String,
+    val time: LocalDateTime,
+    @Enumerated(EnumType.STRING)
+    val channel: Channel,
     @OneToOne
     @JoinColumn(name = "sender_id")
     val sender: Contact,
     @OneToOne
-    @JoinColumn(name = "recipientId")
-    val recipientId: Contact,
+    @JoinColumn(name = "recipient_id")
+    val recipient: Contact,
 )

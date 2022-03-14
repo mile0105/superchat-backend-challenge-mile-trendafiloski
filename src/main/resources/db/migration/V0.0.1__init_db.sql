@@ -7,8 +7,10 @@ create table if not exists contact(
 create table if not exists message(
     id identity primary key,
     content varchar(255) not null,
+    channel varchar(255) not null,
     sender_id int not null,
     recipient_id int not null,
+    time timestamp not null,
     constraint sender_id_constraint foreign key(sender_id) references contact(id),
     constraint recipient_id_constraint foreign key (recipient_id) references contact(id)
 );

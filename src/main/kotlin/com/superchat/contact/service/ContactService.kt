@@ -1,10 +1,12 @@
 package com.superchat.contact.service
 
+import com.superchat.contact.model.Contact
 import com.superchat.contact.model.ContactRequestBody
 import com.superchat.contact.model.ContactResponseBody
 import com.superchat.contact.repository.ContactRepository
 import com.superchat.contact.util.toDbEntityForInsertion
 import com.superchat.contact.util.toResponseBody
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -22,5 +24,10 @@ class ContactService(
     fun createContact(contactRequestBody: ContactRequestBody): ContactResponseBody {
         val savedContact = contactRepository.save(contactRequestBody.toDbEntityForInsertion())
         return savedContact.toResponseBody()
+    }
+
+    fun getContactById(id: Long): Contact {
+        //todo add exception
+        return contactRepository.findByIdOrNull(id)!!
     }
 }
