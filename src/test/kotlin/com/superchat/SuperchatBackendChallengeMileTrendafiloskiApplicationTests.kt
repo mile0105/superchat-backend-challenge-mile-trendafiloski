@@ -1,4 +1,4 @@
-package com.example.superchatbackendchallengemiletrendafiloski
+package com.superchat
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

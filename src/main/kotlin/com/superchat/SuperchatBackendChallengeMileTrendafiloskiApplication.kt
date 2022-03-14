@@ -1,4 +1,4 @@
-package com.example.superchatbackendchallengemiletrendafiloski
+package com.superchat
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

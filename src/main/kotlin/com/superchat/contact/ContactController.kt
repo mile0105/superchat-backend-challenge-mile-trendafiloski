@@ -1,4 +1,4 @@
-package com.example.superchatbackendchallengemiletrendafiloski.contact
+package com.superchat.contact
 
 import org.springframework.web.bind.annotation.RestController
 

@@ -1,4 +1,4 @@
-package com.example.superchatbackendchallengemiletrendafiloski.contact.service
+package com.superchat.contact.service
 
 import org.springframework.stereotype.Service
 

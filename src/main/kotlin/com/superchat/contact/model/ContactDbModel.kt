@@ -1,4 +1,4 @@
-package com.example.superchatbackendchallengemiletrendafiloski.contact.model
+package com.superchat.contact.model
 
 data class ContactDbModel (
     private val id: Long,
