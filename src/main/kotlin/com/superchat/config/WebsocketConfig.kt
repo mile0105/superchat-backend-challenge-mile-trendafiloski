@@ -12,10 +12,10 @@ class WebsocketConfig : WebSocketMessageBrokerConfigurer {
 
     override fun configureMessageBroker(registry: MessageBrokerRegistry) {
         registry.enableSimpleBroker("/topic")
-        registry.setApplicationDestinationPrefixes("/chat")
+        registry.setApplicationDestinationPrefixes("/app")
     }
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/superchat").setAllowedOrigins("*").withSockJS()
+        registry.addEndpoint("/superchat").setAllowedOrigins("http://localhost:63342").withSockJS()
     }
 }
