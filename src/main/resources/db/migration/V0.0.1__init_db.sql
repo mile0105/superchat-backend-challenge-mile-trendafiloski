@@ -15,11 +15,11 @@ create table if not exists message(
     constraint recipient_id_constraint foreign key (recipient_id) references contact(id)
 );
 
-create table if not exists placeholder (
+create table if not exists message_template (
+   id identity primary key,
    editor_id int not null,
-   placeholder varchar(255) not null,
-   target_id int not null,
-   constraint editor_id_constraint foreign key(editor_id) references contact(id),
-   constraint target_id_constraint foreign key(target_id) references contact(id)
+   template varchar(255) not null,
+   parameters varchar(255) not null,
+   constraint editor_id_constraint foreign key(editor_id) references contact(id)
 );
 

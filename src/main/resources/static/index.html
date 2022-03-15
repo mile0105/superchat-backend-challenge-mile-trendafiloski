@@ -9,13 +9,29 @@
 </head>
 <body>
 
+<h1>Message from template</h1>
+
+<label for="message-input-from-template-name">Enter Name</label>
+<input type="text" id="message-input-from-template-name">
+
+<br>
+
+
+<label for="message-input-from-template-bitcoin">Enter bitcoin price in $</label>
+<input type="number" id="message-input-from-template-bitcoin">
+
+<br>
+<button onclick="sendMessageFromTemplate()">send from template</button>
+
+<br>
+<h1>Regular message</h1>
+
 <label for="message-input">Enter message to send</label>
 <input type="text" id="message-input">
 
 <button onclick="sendMessage()">send</button>
 
 <ul id="message-list"></ul>
-
 
 </body>
 </html>

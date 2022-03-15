@@ -2,11 +2,15 @@ package com.superchat.message.service
 
 import com.superchat.contact.model.Contact
 import com.superchat.contact.service.ContactService
+import com.superchat.error.exceptions.NotFoundException
 import com.superchat.message.model.*
 import com.superchat.message.repository.MessageRepository
+import com.superchat.messagetemplate.model.MessageTemplate
+import com.superchat.messagetemplate.service.MessageTemplateService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.*
 import org.springframework.messaging.simp.SimpMessagingTemplate
@@ -16,6 +20,7 @@ internal class MessageServiceTest {
 
     private val messageRepository: MessageRepository = mock(MessageRepository::class.java)
     private val contactService: ContactService = mock(ContactService::class.java)
+    private val messageTemplateService: MessageTemplateService = mock(MessageTemplateService::class.java)
     private val simpMessagingTemplate: SimpMessagingTemplate = mock(SimpMessagingTemplate::class.java)
     private lateinit var messageService: MessageService
     private val messageCaptor = ArgumentCaptor.forClass(Message::class.java)
@@ -27,7 +32,7 @@ internal class MessageServiceTest {
     internal fun setUp() {
         `when`(contactService.getContactById(1)).thenReturn(sender)
         `when`(contactService.getContactById(2)).thenReturn(receiver)
-        messageService = MessageService(messageRepository, contactService, simpMessagingTemplate)
+        messageService = MessageService(messageRepository, contactService, messageTemplateService, simpMessagingTemplate)
     }
 
     @Test
@@ -94,5 +99,39 @@ internal class MessageServiceTest {
                 MessageResponseBody(2, "Do I know you?", receiver, sender, "SMS", LocalDateTime.MAX),
             ), messages
         )
+    }
+
+    @Test
+    internal fun `Should send message from template`() {
+
+        val requestBody = MessageFromTemplateRequestBody(1, 2, mapOf("name" to "superchat"))
+        `when`(messageTemplateService.getMessageTemplateById(1)).thenReturn(MessageTemplate(1, "Hello {{name}}", sender, "name"))
+        val savedMessage = Message(
+            1,
+            "Hello superchat",
+            LocalDateTime.MIN,
+            Channel.INTERNAL,
+            sender,
+            receiver
+        )
+        `when`(messageRepository.save(messageCaptor.capture())).thenReturn(savedMessage)
+
+        val sentMessage = messageService.sendMessageFromTemplate(requestBody)
+
+        verify(simpMessagingTemplate).convertAndSend("/topic/messages/2", savedMessage)
+        assertEquals(MessageResponseBody(1, "Hello superchat", sender, receiver, "INTERNAL", LocalDateTime.MIN), sentMessage)
+
+        val capturedMessage = messageCaptor.value
+        assertEquals(savedMessage.copy(id = null), capturedMessage.copy(time = LocalDateTime.MIN))
+    }
+
+    @Test
+    internal fun `Should throw exception if parameter is not found`() {
+        val requestBody = MessageFromTemplateRequestBody(1, 2, mapOf("owner" to "superchat"))
+        `when`(messageTemplateService.getMessageTemplateById(1)).thenReturn(MessageTemplate(1, "Hello {{name}}", sender, "name"))
+
+        assertThrows<NotFoundException> {
+            messageService.sendMessageFromTemplate(requestBody)
+        }
     }
 }

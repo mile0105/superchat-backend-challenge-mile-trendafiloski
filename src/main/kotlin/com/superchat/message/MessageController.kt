@@ -1,5 +1,6 @@
 package com.superchat.message
 
+import com.superchat.message.model.MessageFromTemplateRequestBody
 import com.superchat.message.model.MessageResponseBody
 import com.superchat.message.model.SendMessageRequestBody
 import com.superchat.message.service.MessageService
@@ -17,6 +18,11 @@ class MessageController(
     @MessageMapping("/chat")
     fun sendMessage(@Payload @Valid message: SendMessageRequestBody): ResponseEntity<MessageResponseBody> {
         return ResponseEntity.ok(messageService.sendMessage(message))
+    }
+
+    @MessageMapping("/chat/template")
+    fun sendMessageFromTemplate(@Payload @Valid message: MessageFromTemplateRequestBody): ResponseEntity<MessageResponseBody> {
+        return ResponseEntity.ok(messageService.sendMessageFromTemplate(message))
     }
 
 }
